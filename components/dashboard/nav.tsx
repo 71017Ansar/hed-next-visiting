@@ -19,6 +19,59 @@ import {
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Navigation items based on user role
+// const getNavItems = (role: string) => {
+//   const items = [
+//     {
+//       name: "Dashboard",
+//       href: "/dashboard",
+//       icon: Home,
+//       roles: ["superadmin", "admin", "principal", "employee"],
+//     },
+//   ];
+
+//   if (role === "superadmin") {
+//     items.push(
+//       {
+//         name: "Admins",
+//         href: "/dashboard/admins",
+//         icon: Users,
+//         roles: ["superadmin"],
+//       },
+//       {
+//         name: "Principals",
+//         href: "/dashboard/principals",
+//         icon: Building2,
+//         roles: ["superadmin"],
+//       }
+//     );
+//   }
+
+//   if (role === "superadmin" || role === "admin") {
+//     items.push(
+//       {
+//         name: "Employees",
+//         href: "/dashboard/employees",
+//         icon: Briefcase,
+//         roles: ["superadmin", "admin"],
+//       },
+//       {
+//         name: "Bills",
+//         href: "/dashboard/bills",
+//         icon: FileText,
+//         roles: ["superadmin", "admin"],
+//       }
+//     );
+//   }
+
+//   items.push({
+//     name: "Settings",
+//     href: "/dashboard/settings",
+//     icon: Settings,
+//     roles: ["superadmin", "admin", "principal", "employee"],
+//   });
+
+//   return items.filter((item) => item.roles.includes(role));
+// };
 const getNavItems = (role: string) => {
   const items = [
     {
@@ -29,40 +82,55 @@ const getNavItems = (role: string) => {
     },
   ];
 
-  if (role === "superadmin") {
-    items.push(
-      {
-        name: "Admins",
-        href: "/dashboard/admins",
-        icon: Users,
-        roles: ["superadmin"],
-      },
-      {
-        name: "Principals",
-        href: "/dashboard/principals",
-        icon: Building2,
-        roles: ["superadmin"],
-      }
-    );
+  // Admins page for superadmin and principal
+  if (["superadmin", "principal"].includes(role)) {
+    items.push({
+      name: "Admins",
+      href: "/dashboard/admins",
+      icon: Users,
+      roles: ["superadmin", "principal"],
+    });
   }
 
-  if (role === "superadmin" || role === "admin") {
+  // Principals page only for superadmin
+  if (role === "superadmin") {
+    items.push({
+      name: "Principals",
+      href: "/dashboard/principals",
+      icon: Building2,
+      roles: ["superadmin"],
+    });
+  }
+
+  // Employees and Bills page for superadmin, admin, and principal
+  if (["superadmin", "admin", "principal"].includes(role)) {
     items.push(
       {
         name: "Employees",
         href: "/dashboard/employees",
         icon: Briefcase,
-        roles: ["superadmin", "admin"],
+        roles: ["superadmin", "admin", "principal"],
       },
       {
         name: "Bills",
         href: "/dashboard/bills",
         icon: FileText,
-        roles: ["superadmin", "admin"],
+        roles: ["superadmin", "admin", "principal"],
       }
     );
   }
 
+  // Organization page only for principal
+  if (role === "principal") {
+    items.push({
+      name: "Organization",
+      href: "/dashboard/organization",
+      icon: Building2,
+      roles: ["principal"],
+    });
+  }
+
+  // Settings for all roles
   items.push({
     name: "Settings",
     href: "/dashboard/settings",
@@ -72,6 +140,9 @@ const getNavItems = (role: string) => {
 
   return items.filter((item) => item.roles.includes(role));
 };
+
+
+
 
 export function DashboardNav() {
   const { user, logout } = useAuth();
@@ -143,7 +214,8 @@ export function DashboardNav() {
                 </Avatar>
                 <div className="flex flex-col items-start text-sm">
                   <span className="font-medium">{user.name}</span>
-                  <span className="text-xs text-muted-foreground capitalize">{user.userRole}</span>
+                  <span className="text-xs text-muted-foreground capitalize">{user.userRole
+}</span>
                 </div>
               </div>
             </Button>
