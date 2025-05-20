@@ -200,9 +200,8 @@ export default function DashboardPage() {
 	const bills = useBillStore((state) => state.bills);
 
 	const stats = useMemo(() => {
-		if (!user) return [];
-		return calculateDashboardStats(user.role, allUsers, bills);
-	}, [user, allUsers, bills]);
+		if (!user || !user.userRole) return [];
+		return calculateDashboardStats(user.userRole, allUsers, bills);	}, [user, allUsers, bills]);
 
 	if (!user) return null;
 

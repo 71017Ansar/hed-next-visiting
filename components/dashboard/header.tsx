@@ -34,7 +34,8 @@ export function DashboardHeader() {
 
   if (!user) return null;
 
-  const { color, title } = roleConfigs[user.role];
+  if (!user.userRole) return null;
+  const { color, title } = roleConfigs[user.userRole];
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:px-6">

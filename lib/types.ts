@@ -13,7 +13,11 @@ export interface User {
 
 // Authentication types
 export interface AuthState {
-	user: User | null;
+	user: {
+		token: string | null;
+		name: string | null;
+		userRole: UserRole | null;
+	} | null;
 	isAuthenticated: boolean;
 	isLoading: boolean;
 }

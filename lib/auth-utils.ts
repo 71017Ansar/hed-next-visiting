@@ -30,7 +30,7 @@ export function useRoleProtection(allowedRoles: UserRole[]) {
     if (!isLoading) {
       if (!isAuthenticated) {
         router.push("/login");
-      } else if (user && !allowedRoles.includes(user.role)) {
+      } else if (user && user.userRole && !allowedRoles.includes(user.userRole)) {
         router.push("/dashboard"); // Redirect to main dashboard if role not allowed
       }
     }

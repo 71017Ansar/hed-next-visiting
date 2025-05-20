@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import axios from "axios";	
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,20 +21,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth-context";
+
 import { toast } from "sonner";
+import credentialsStore from "@/lib/stores/credentials";
+
 
 // Define the form schema
 const loginSchema = z.object({
 	email: z.string().email({ message: "Please enter a valid email address" }),
 	password: z
 		.string()
-		.min(6, { message: "Password must be at least 6 characters" }),
+		.min(5, { message: "Password must be at least 5 characters" }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
 	const { login } = useAuth();
+
+	const {  setToken,setName,setUserRole } = credentialsStore((state:any) => state);
+	
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +60,7 @@ export function LoginForm() {
 	const onSubmit = async (data: LoginFormValues) => {
 		setIsLoading(true);
 		try {
-			const success = await login(data.email, data.password);
+			const success = await login(data);
 
 			if (success) {
 				toast.success("Login successful", {
@@ -81,9 +88,9 @@ export function LoginForm() {
 			email: "superadmin@example.com",
 			password: "password",
 		},
-		{ role: "admin", email: "admin@example.com", password: "password" },
-		{ role: "principal", email: "principal@example.com", password: "password" },
-		{ role: "employee", email: "employee@example.com", password: "password" },
+		{ role: "admin", email: "admin@gmail.com", password: "12345" },
+		{ role: "principal", email: "principal@gmail.com", password: "12345" },
+		{ role: "employee", email: "employee@gmail.com", password: "12345" },
 	];
 
 	const handleDemoLogin = (email: string, password: string) => {

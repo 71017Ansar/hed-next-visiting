@@ -79,7 +79,7 @@ export function DashboardNav() {
 
   if (!user) return null;
 
-  const navItems = getNavItems(user.role);
+  const navItems = getNavItems(user.userRole ?? "");
 
   return (
     <div className="flex flex-col h-full p-4 border-r bg-card">
@@ -138,12 +138,12 @@ export function DashboardNav() {
             <Button variant="ghost" className="w-full justify-start">
               <div className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={"https://github.com/shadcn.png"} alt={user.name ?? undefined} />
+                  <AvatarFallback>{user.name?.charAt(0) ?? ""}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col items-start text-sm">
                   <span className="font-medium">{user.name}</span>
-                  <span className="text-xs text-muted-foreground capitalize">{user.role}</span>
+                  <span className="text-xs text-muted-foreground capitalize">{user.userRole}</span>
                 </div>
               </div>
             </Button>
